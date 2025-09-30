@@ -18,7 +18,7 @@ public class Directory {
 	//1. Método para añadir contacto
 	public HashMap  añadirContacto(String nombre, String telefono) {
 		if (!(directory.containsKey(nombre))){
-			System.out.println("Se guardo el contacto exitosamente");
+			System.out.println("Se guardo el contacto exitosamente.");
 			directory.put(nombre,telefono);
 			return directory;
 		}else
@@ -61,19 +61,23 @@ public class Directory {
 			
 			if (modificarContacto(nombreModificar, nuevoNumero)) {
 				System.out.println("El contacto se ha modificado");
+				System.out.println(" ");
 			} else {
 				System.out.println("El contacto no existe");
 			}
 		}
+	
+	
+	
 	//4 Solicitar eliminación
-		public void solicitarEliminación() {
-			System.out.println("Ingrese el nombre del contacto a eliminar");
-			String nombreEliminar = sc.nextLine();
-			if(!eliminarContacto(nombreEliminar)) {
-				System.out.println("El contacto no existe");
-			}
-			
+	public void solicitarEliminación() {
+		System.out.println("Ingrese el nombre del contacto a eliminar");
+		String nombreEliminar = sc.nextLine();
+		if(!eliminarContacto(nombreEliminar)) {
+			System.out.println("El contacto no existe");
 		}
+		
+	}
 	//4.1Eliminar contacto
 	public boolean eliminarContacto(String nombre) {
 		if (directory.containsKey(nombre)) {
@@ -83,18 +87,24 @@ public class Directory {
 		return false;
 	}
 	
-	//3. Ver todos los contactos
-	public void mostrarContactos() {
-		if (directory.isEmpty()) {
-			System.out.println("El directorio no tiene contactos");
-			return;
+	//5. Ver todos los contactos
+		public void mostrarContactos() {
+			if (directory.isEmpty()) {
+				System.out.println("El directorio no tiene contactos");
+				return;
+			}
+			else System.out.println("AGENDA TELEFÓNICA");
+			for (String nombre : directory.keySet()) {
+				System.out.println("NOMBRE: " + nombre + " TÉLEFONO: " + directory.get(nombre));
+			}
 		}
-		else System.out.println("AGENDA TELEFÓNICA");
-		for (String nombre : directory.keySet()) {
-			System.out.println("NOMBRE: " + nombre + "TÉLEFONO: " + directory.get(nombre));
-		}
-	}
+		//6 Verificar espacios libres
 
+		public void espaciosLibres(){
+			int espaciosLibres = 10 - directory.size();
+			System.out.println("Los espacios restantes en el directorio son: "+ espaciosLibres);
+			
+		}
 	
 	//1.Método para recibir las entradas del usuario.
 	public HashMap obtenerContacto() {
@@ -103,10 +113,8 @@ public class Directory {
 		System.out.println("Ingrese el número telefóno: ");
 		String numero = sc.nextLine();
 		return añadirContacto(nombre, numero);
-		
-		
 	}
-	
+		
 	//Ejecución del menú
 	
 	public void ejecutarMenu() {
@@ -116,42 +124,54 @@ public class Directory {
 		do {
 			System.out.println(" ");
 			System.out.println("AGENDA TELEFÓNICA");
+			System.out.println(" ");			
+			System.out.println("Elige una opción del menú: ");
+			System.out.println(" ");
 			System.out.println("1. Añadir contacto");
 			System.out.println("2. Ver existencia del contacto");
-			System.out.println("3. Ver lista de contactos");
-			System.out.println("4. Buscar contacto");
-			System.out.println("5. Eliminar contacto");
-			System.out.println("6. Modificar número de contacto");
-			System.out.println("7. Verificar espacios libres restantes");
-			System.out.println("Elige una opción del menú: ");
+			System.out.println("3. Modificar número de contacto");
+			System.out.println("4. Eliminar contacto");
+			System.out.println("5. Ver lista de contactos");
+			System.out.println("6. Verificar espacios libres restantes");
+			System.out.println("7. Salir de la agenda");
 			
 			menuOpcion = sc.nextInt();
 			sc.nextLine();
 			
 			switch (menuOpcion) {
 			case 1:
-				obtenerContacto();
+				if (directory.size()<=10) {
+					obtenerContacto();
+				} else{
+					System.out.println("La agenda ha alcanzado el máximo de contactos guardados.");
+				}
+				
 				break;
 			case 2:
 				solicitarNombre();
 				break;
 			case 3:
-				mostrarContactos();
+				solicitarModificacion();
 				break;
 			case 4:
-				
-			//case 5:
-			//case 6:
-			//case 7:
+				solicitarEliminación();
+				break;
+			case 5:
+				mostrarContactos();
+				break;
+			case 6:
+				espaciosLibres();
+				break;
+			case 7:
+				System.out.println("Se ha cerrado la agenda");
 		
 			default:
 				System.out.println("La opción ingresada no es válida");
 				
 			}
 			
-		}while(menuOpcion != 8);
+		}while(menuOpcion != 7);
 		sc.close();
-		System.out.println("Se ha cerrado la agenda");
 	}
 	
 }
